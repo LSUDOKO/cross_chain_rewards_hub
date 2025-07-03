@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@circle-fin/developer-controlled-wallets": "^8.3.0",
     "@dhiwise/component-tagger": "^1.0.9",
+    "@lifi/sdk": "^3.7.10",
+    "@metamask/sdk": "^0.33.0",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/forms": "^0.5.7",
     "@testing-library/jest-dom": "^5.15.1",
@@ -13,6 +16,7 @@
     "d3": "^7.9.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.0.1",
+    "ethers": "^6.15.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.484.0",
     "react": "^18.2.0",
