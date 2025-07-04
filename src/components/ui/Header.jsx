@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
+import { useWallet } from '../../contexts/WalletContext';
 
 const Header = () => {
   const [currentLanguage, setCurrentLanguage] = useState('en');
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
-  const [currentNetwork, setCurrentNetwork] = useState('Ethereum');
-  const [balance, setBalance] = useState('0.00');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { address, balance, network, connectWallet } = useWallet();
 
   const navigationItems = [
     {
@@ -54,18 +52,6 @@ const Header = () => {
     if (savedLanguage) {
       setCurrentLanguage(savedLanguage);
     }
-
-    // Simulate wallet connection check
-    const checkWalletConnection = () => {
-      const connected = localStorage.getItem('walletConnected') === 'true';
-      if (connected) {
-        setIsWalletConnected(true);
-        setWalletAddress('0x742d35Cc6634C0532925a3b8D');
-        setBalance('1,234.56');
-      }
-    };
-
-    checkWalletConnection();
   }, []);
 
   const handleLanguageChange = (langCode) => {
@@ -75,9 +61,7 @@ const Header = () => {
   };
 
   const handleWalletConnect = () => {
-    if (!isWalletConnected) {
-      navigate('/wallet-connection-network-setup');
-    }
+    connectWallet();
   };
 
   const handleNetworkSwitch = () => {
@@ -152,12 +136,12 @@ const Header = () => {
             </div>
 
             {/* Wallet Status */}
-            {isWalletConnected ? (
+            {address ? (
               <div className="hidden sm:flex items-center space-x-3 bg-surface-700 rounded-lg px-4 py-2 border border-border">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-success rounded-full"></div>
                   <span className="text-sm font-mono text-text-primary">
-                    {truncateAddress(walletAddress)}
+                    {truncateAddress(address)}
                   </span>
                 </div>
                 <div className="h-4 w-px bg-border"></div>
@@ -165,12 +149,12 @@ const Header = () => {
                   onClick={handleNetworkSwitch}
                   className="flex items-center space-x-1 text-sm text-text-secondary hover:text-text-primary transition-smooth"
                 >
-                  <span>{currentNetwork}</span>
+                  <span>{network}</span>
                   <Icon name="ChevronDown" size={14} />
                 </button>
                 <div className="h-4 w-px bg-border"></div>
                 <span className="text-sm font-mono text-accent">
-                  ${balance}
+                  ${balance ? parseFloat(balance).toFixed(4) : '0.00'}
                 </span>
               </div>
             ) : (
@@ -215,7 +199,7 @@ const Header = () => {
             ))}
 
             {/* Mobile Wallet Connection */}
-            {!isWalletConnected && (
+            {!address && (
               <div className="pt-2 border-t border-border">
                 <Button
                   variant="primary"
@@ -248,12 +232,12 @@ const Header = () => {
             </div>
 
             {/* Mobile Wallet Status */}
-            {isWalletConnected && (
+            {address && (
               <div className="pt-2 border-t border-border space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-text-secondary">Wallet</span>
                   <span className="text-sm font-mono text-text-primary">
-                    {truncateAddress(walletAddress)}
+                    {truncateAddress(address)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -262,14 +246,14 @@ const Header = () => {
                     onClick={handleNetworkSwitch}
                     className="flex items-center space-x-1 text-sm text-text-primary hover:text-primary transition-smooth"
                   >
-                    <span>{currentNetwork}</span>
+                    <span>{network}</span>
                     <Icon name="ChevronDown" size={14} />
                   </button>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-text-secondary">Balance</span>
                   <span className="text-sm font-mono text-accent">
-                    ${balance}
+                    ${balance ? parseFloat(balance).toFixed(4) : '0.00'}
                   </span>
                 </div>
               </div>
