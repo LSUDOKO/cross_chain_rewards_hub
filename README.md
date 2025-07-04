@@ -13,6 +13,8 @@ By integrating **MetaMask SDK/DTK**, **Circle Wallets**, and **LI.FI SDK (CCTP V
 | Potential Impact          | 20        |
 
 ---
+## Architecture 
+![image](https://github.com/user-attachments/assets/da6fe8c8-7a39-430c-b43d-64701368a261)
 
 ## 🧠 Project Overview
 
